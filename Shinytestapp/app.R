@@ -1,11 +1,3 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
 
 library(shiny)
 library(overlayCard)
@@ -16,7 +8,7 @@ ui <- fluidPage(
     # Application title
     titlePanel("Old Faithful Geyser Data"),
 
-    # Sidebar with a slider input for number of bins 
+    # Sidebar with a slider input for number of bins
     sidebarLayout(
         sidebarPanel(
             sliderInput("bins",
@@ -24,13 +16,14 @@ ui <- fluidPage(
                         min = 1,
                         max = 50,
                         value = 30),
-            
+
         ),
-        
+
 
         # Show a plot of the generated distribution
         mainPanel(
-           overlayCard("Front","overlayhelp")
+            overlayCardOutput("wuff1"),
+            overlayCardOutput("wuff2")
         )
     )
 )
@@ -46,8 +39,20 @@ server <- function(input, output) {
         # draw the histogram with the specified number of bins
         hist(x, breaks = bins, col = 'darkgray', border = 'white')
     })
+
+    output$bla <- renderText({
+        input$bins
+    })
+
+    output$wuff1 <- renderOverlayCard({
+        overlayCard(input$bins, "text1")
+    })
     
+    output$wuff2 <- renderOverlayCard({
+        overlayCard("text", "test2")
+    })
+
 }
 
-# Run the application 
+# Run the application
 shinyApp(ui = ui, server = server)

@@ -13,64 +13,93 @@ HTMLWidgets.widget({
       renderValue: function(x) {
 
         // TODO: code to render the widget, e.g.
-          const container = document.createElement("div");
-          container.classList.add("card_container");
+        const template = document.createElement('template');
+        template.innerHTML = `
+          <style>
+          .user-card {
+        		font-family: 'Arial', sans-serif;
+        		background: #f4f4f4;
+        		width: 500px;
+        		display: grid;
+        		grid-template-columns: 1fr 2fr;
+        		grid-gap: 10px;
+        		margin-bottom: 15px;
+        		border-bottom: darkorchid 5px solid;
+        	}
 
-          container.style.position = "relative";
-          container.style.height = "500px";
+        	.user-card img {
+        		width: 100%;
+        	}
 
-          const main = document.createElement("div");
-          main.classList.add("main");
-          main.classList.add("col-sm-4");
-          main.style.display = "block";
-          main.style.width = "100%";
-          main.style.height = "100%";
-          main.style.backgroundColor = "lightgray";
-          main.innerHTML = x.front;
+        	.user-card button {
+        		cursor: pointer;
+        		background: darkorchid;
+        		color: #fff;
+        		border: 0;
+        		border-radius: 5px;
+        		padding: 5px 10px;
+        	}
+          </style>
+          <div class="user-card">
+            <img />
+            <div>
+              <h3></h3>
+              <div class="info">
+                <p><slot name="email" /></p>
+                <p><slot name="phone" /></p>
+              </div>
+              <button id="toggle-info">Hide Info</button>
+            </div>
+          </div>
+        `;
 
-          const overlay = document.createElement("div");
-          overlay.classList.add("overlay");
-          overlay.style.position = "absolute";
-          overlay.style.bottom = "100%";
-          overlay.style.left = 0;
-          overlay.style.right = 0;
-          overlay.style.backgroundColor = "#008CBA";
-          overlay.style.overflow = "hidden";
-          overlay.style.width = "100%";
-          overlay.style.height = 0;
-          overlay.style.transition = "0.5s ease";
-          overlay.style.paddingLeft = "15px";
-          overlay.style.paddingRight = "15px";
-          overlay.innerHTML = x.overlay;
+        class UserCard extends HTMLElement {
+          constructor() {
+            super();
 
-          const text = document.createElement("div");
-          text.classList.add("text");
-          text.style.color = "white";
-          text.style.fontSize = "20px";
-          text.style.position = "absolute";
-          text.style.top = "50%";
-          text.style.left = "50%";
-          text.style.transform = "translate(-50%, -50%)";
-          text.style.align = "center";
+            this.showInfo = true;
 
-          document.querySelector("body").appendChild(container);
-          document.querySelector(".card_container").appendChild(main);
-          document.querySelector(".main").appendChild(overlay);
-          document.querySelector(".overlay").appendChild(text);
+            this.attachShadow({ mode: 'open' });
+            this.shadowRoot.appendChild(template.content.cloneNode(true));
+            this.shadowRoot.querySelector('h3').innerText = this.getAttribute('name');
+            this.shadowRoot.querySelector('img').src = this.getAttribute('avatar');
+          }
 
-          document.querySelector(".card_container").addEventListener("mouseover", function(){
-              const overlay = document.querySelector(".overlay");
-              overlay.style.bottom = 0;
-              overlay.style.height = "100%";
-          });
+          toggleInfo() {
+            this.showInfo = !this.showInfo;
 
-          document.querySelector(".card_container").addEventListener("mouseout", function(){
-              const overlay = document.querySelector(".overlay");
-              overlay.style.bottom = "100%";
-              overlay.style.height = 0;
-          });
+            const info = this.shadowRoot.querySelector('.info');
+            const toggleBtn = this.shadowRoot.querySelector('#toggle-info');
 
-    },
+            if(this.showInfo) {
+              info.style.display = 'block';
+              toggleBtn.innerText = 'Hide Info';
+            } else {
+              info.style.display = 'none';
+              toggleBtn.innerText = 'Show Info';
+            }
+          }
+
+          connectedCallback() {
+            this.shadowRoot.querySelector('#toggle-info').addEventListener('click', () => this.toggleInfo());
+          }
+
+          disconnectedCallback() {
+            this.shadowRoot.querySelector('#toggle-info').removeEventListener();
+          }
+        }
+
+        window.customElements.define('user-card', UserCard);
+
+      const card = document.createElement("div");
+      card.innerHTML = `
+      <user-card name="John Doe" avatar="https://randomuser.me/api/portraits/men/1.jpg">
+        <div slot="email">${x.front}</div>
+        <div slot="phone">${x.back}</div>
+      </user-card>`;
+
+      },
+
 
       resize: function(width, height) {
 
