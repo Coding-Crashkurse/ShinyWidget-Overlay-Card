@@ -14,15 +14,17 @@ HTMLWidgets.widget({
 
         // TODO: code to render the widget, e.g.
           const container = document.createElement("div");
-          container.classList.add("container");
+          container.classList.add("card_container");
+
           container.style.position = "relative";
-          container.style.width = "50%";
+          container.style.height = "500px";
 
           const main = document.createElement("div");
           main.classList.add("main");
+          main.classList.add("col-sm-4");
           main.style.display = "block";
           main.style.width = "100%";
-          main.style.height = "500px";
+          main.style.height = "100%";
           main.style.backgroundColor = "lightgray";
           main.innerHTML = x.front;
 
@@ -37,6 +39,8 @@ HTMLWidgets.widget({
           overlay.style.width = "100%";
           overlay.style.height = 0;
           overlay.style.transition = "0.5s ease";
+          overlay.style.paddingLeft = "15px";
+          overlay.style.paddingRight = "15px";
           overlay.innerHTML = x.overlay;
 
           const text = document.createElement("div");
@@ -50,17 +54,17 @@ HTMLWidgets.widget({
           text.style.align = "center";
 
           document.querySelector("body").appendChild(container);
-          document.querySelector(".container").appendChild(main);
+          document.querySelector(".card_container").appendChild(main);
           document.querySelector(".main").appendChild(overlay);
           document.querySelector(".overlay").appendChild(text);
 
-          document.querySelector(".container").addEventListener("mouseover", function(){
+          document.querySelector(".card_container").addEventListener("mouseover", function(){
               const overlay = document.querySelector(".overlay");
               overlay.style.bottom = 0;
               overlay.style.height = "100%";
           });
 
-          document.querySelector(".container").addEventListener("mouseout", function(){
+          document.querySelector(".card_container").addEventListener("mouseout", function(){
               const overlay = document.querySelector(".overlay");
               overlay.style.bottom = "100%";
               overlay.style.height = 0;
