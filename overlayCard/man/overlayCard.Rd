@@ -4,7 +4,7 @@
 \alias{overlayCard}
 \title{<Add Title>}
 \usage{
-overlayCard(front, overlay, width = NULL, height = NULL, elementId = NULL)
+overlayCard(text, background, width = NULL, height = NULL, elementId = NULL)
 }
 \description{
 <Add Description>

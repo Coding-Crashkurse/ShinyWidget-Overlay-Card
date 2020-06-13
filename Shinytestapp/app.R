@@ -23,7 +23,8 @@ ui <- fluidPage(
         # Show a plot of the generated distribution
         mainPanel(
             overlayCardOutput("wuff1"),
-            overlayCardOutput("wuff2")
+            overlayCardOutput("wuff2"),
+            overlayCardOutput("wuff3")
         )
     )
 )
@@ -45,11 +46,15 @@ server <- function(input, output) {
     })
 
     output$wuff1 <- renderOverlayCard({
-        overlayCard(input$bins, "text1")
+        overlayCard(id="mh3", input$bins, background = "yellow")
     })
     
     output$wuff2 <- renderOverlayCard({
-        overlayCard("text", "test2")
+        overlayCard(id="mh", "Ich bin statischer text", background = "green")
+    })
+    
+    output$wuff3 <- renderOverlayCard({
+        overlayCard(id="mh2", "Ich wäre gerne ein Object", background = "orangered")
     })
 
 }

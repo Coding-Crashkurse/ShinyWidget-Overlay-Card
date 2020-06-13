@@ -5,12 +5,13 @@
 #' @import htmlwidgets
 #'
 #' @export
-overlayCard <- function(front, overlay, width = NULL, height = NULL, elementId = NULL) {
+overlayCard <- function(id, text, background, width = NULL, height = NULL, elementId = NULL) {
 
   # forward options using x
   x = list(
-    front = front,
-    overlay = overlay
+    id = id,
+    text = text,
+    background = background
   )
 
   # create widget

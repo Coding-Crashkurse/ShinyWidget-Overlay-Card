@@ -11,4 +11,4 @@ devtools::install()
 
 library(overlayCard)
 
-overlayCard::overlayCard("Fronttext", "overlayText")
+overlayCard::overlayCard(id = "mh", text =  "<strong>Ich bin fett</strong> Ich bin dünn", background = "yellow")
